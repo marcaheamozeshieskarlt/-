@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>مرجع آموزشی اسکارلت | اسکارلت</title>
+<meta name="description" content="مرجع آموزشی اسکارلت - مجموعه‌ای از اپلیکیشن‌ها و بازی‌های اندرویدی" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --velvet-1:#1a0620;
+    --velvet-2:#2a0b30;
+    --velvet-3:#3d0f3a;
+    --scarlett:#ff2e63;
+    --scarlett-2:#ff6b9d;
+    --purple-glow:#a855f7;
+    --gold:#f5c86b;
+    --text:#f4e9f5;
+    --text-dim:#c9b8d3;
+    --glass:rgba(255,255,255,0.055);
+    --glass-border:rgba(255,255,255,0.12);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Vazirmatn',system-ui,sans-serif;
+    background:var(--velvet-1);
+    color:var(--text);
+    overflow-x:hidden;
+    min-height:100vh;
+    position:relative;
+    line-height:1.7;
+  }
+
+  /* ===== Velvet background ===== */
+  .bg-velvet{
+    position:fixed;inset:0;z-index:-3;
+    background:
+      radial-gradient(ellipse at 15% 10%, #4a0f4a 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 20%, #5c0d33 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 100%, #2a0940 0%, transparent 60%),
+      linear-gradient(180deg,#1a0620 0%,#240828 45%,#12041a 100%);
+  }
+  .bg-velvet::after{
+    content:'';position:absolute;inset:0;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.35 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.35'/></svg>");
+    opacity:.18;mix-blend-mode:overlay;pointer-events:none;
+  }
+  .blob{
+    position:fixed;border-radius:50%;filter:blur(90px);z-index:-2;
+    opacity:.55;pointer-events:none;
+    animation:float 14s ease-in-out infinite;
+  }
+  .blob.b1{width:420px;height:420px;background:var(--scarlett);top:-100px;right:-100px;animation-delay:0s}
+  .blob.b2{width:380px;height:380px;background:var(--purple-glow);bottom:-120px;left:-80px;animation-delay:-5s}
+  .blob.b3{width:300px;height:300px;background:#ff8a3d;top:45%;left:40%;opacity:.25;animation-delay:-9s}
+  @keyframes float{
+    0%,100%{transform:translate(0,0) scale(1)}
+    50%{transform:translate(30px,-40px) scale(1.08)}
+  }
+
+  /* ===== Navbar ===== */
+  nav{
+    position:fixed;top:18px;left:50%;transform:translateX(-50%);
+    z-index:100;display:flex;align-items:center;gap:6px;
+    padding:8px 10px;border-radius:100px;
+    background:rgba(20,5,25,0.55);
+    border:1px solid var(--glass-border);
+    backdrop-filter:blur(20px) saturate(180%);
+    -webkit-backdrop-filter:blur(20px) saturate(180%);
+    box-shadow:0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08);
+    font-size:14px;
+  }
+  nav .brand{
+    display:flex;align-items:center;gap:8px;
+    padding:6px 14px 6px 8px;font-weight:800;
+    background:linear-gradient(135deg,var(--scarlett),var(--purple-glow));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    letter-spacing:-.3px;
+  }
+  nav .brand::before{
+    content:'';width:10px;height:10px;border-radius:50%;
+    background:radial-gradient(circle at 30% 30%,#fff,var(--scarlett));
+    box-shadow:0 0 12px var(--scarlett);
+    -webkit-text-fill-color:initial;
+  }
+  nav a{
+    color:var(--text-dim);text-decoration:none;
+    padding:8px 14px;border-radius:100px;
+    font-weight:500;transition:all .3s ease;
+    white-space:nowrap;
+  }
+  nav a:hover{color:var(--text);background:rgba(255,255,255,0.06)}
+  nav a.cta{
+    background:linear-gradient(135deg,var(--scarlett),#c026d3);
+    color:#fff;font-weight:600;
+    box-shadow:0 4px 20px rgba(255,46,99,0.4);
+  }
+  nav a.cta:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(255,46,99,0.6)}
+  @media(max-width:720px){
+    nav{top:10px;padding:6px 8px;font-size:12px;gap:2px}
+    nav a{padding:7px 10px}
+    nav .brand{padding:5px 8px;font-size:12px}
+    nav a.hide-sm{display:none}
+  }
+
+  /* ===== Hero ===== */
+  .hero{
+    min-height:100vh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    text-align:center;padding:120px 24px 80px;
+    position:relative;
+  }
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:8px 18px;border-radius:100px;
+    background:var(--glass);border:1px solid var(--glass-border);
+    backdrop-filter:blur(12px);font-size:13px;color:var(--text-dim);
+    margin-bottom:28px;
+    animation:fadeUp .8s ease both;
+  }
+  .badge .dot{
+    width:8px;height:8px;border-radius:50%;background:#4ade80;
+    box-shadow:0 0 12px #4ade80;animation:pulse 2s infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+  .hero h1{
+    font-size:clamp(2.4rem,7vw,5rem);
+    font-weight:900;line-height:1.15;
+    letter-spacing:-2px;margin-bottom:22px;
+    animation:fadeUp .9s .1s ease both;
+  }
+  .hero h1 .grad{
+    background:linear-gradient(120deg,#ff2e63 0%,#ff6b9d 30%,#c026d3 60%,#a855f7 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    background-size:200% auto;animation:shine 5s linear infinite;
+  }
+  @keyframes shine{to{background-position:200% center}}
+  .hero p.sub{
+    font-size:clamp(1rem,2.2vw,1.2rem);
+    color:var(--text-dim);max-width:640px;margin:0 auto 40px;
+    animation:fadeUp .9s .2s ease both;
+  }
+  .hero-actions{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;animation:fadeUp .9s .3s ease both}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:14px 28px;border-radius:100px;font-weight:700;
+    text-decoration:none;font-size:15px;
+    transition:all .3s cubic-bezier(.34,1.56,.64,1);
+    border:none;cursor:pointer;font-family:inherit;
+  }
+  .btn.primary{
+    background:linear-gradient(135deg,var(--scarlett),#c026d3);
+    color:#fff;box-shadow:0 10px 40px rgba(255,46,99,0.45), inset 0 1px 0 rgba(255,255,255,0.3);
+  }
+  .btn.primary:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 15px 50px rgba(255,46,99,0.65)}
+  .btn.ghost{
+    background:var(--glass);color:var(--text);
+    border:1px solid var(--glass-border);
+    backdrop-filter:blur(12px);
+  }
+  .btn.ghost:hover{background:rgba(255,255,255,0.1);transform:translateY(-3px)}
+
+  .stats{
+    display:flex;gap:36px;margin-top:70px;
+    animation:fadeUp .9s .5s ease both;flex-wrap:wrap;justify-content:center;
+  }
+  .stat{text-align:center}
+  .stat b{
+    display:block;font-size:2rem;font-weight:900;
+    background:linear-gradient(135deg,#fff,var(--scarlett-2));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .stat span{font-size:13px;color:var(--text-dim)}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ===== Sections ===== */
+  section{padding:100px 24px;max-width:1200px;margin:0 auto;position:relative}
+  .section-head{text-align:center;margin-bottom:60px}
+  .eyebrow{
+    display:inline-block;font-size:13px;font-weight:700;
+    color:var(--scarlett-2);letter-spacing:2px;
+    margin-bottom:12px;text-transform:uppercase;
+  }
+  .section-head h2{
+    font-size:clamp(1.8rem,4.5vw,3rem);font-weight:900;
+    letter-spacing:-1px;margin-bottom:14px;line-height:1.2;
+  }
+  .section-head p{color:var(--text-dim);max-width:560px;margin:0 auto;font-size:1rem}
+
+  /* ===== Apps Grid ===== */
+  .apps{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+  .app-card{
+    position:relative;padding:32px 28px;border-radius:26px;
+    background:linear-gradient(145deg,rgba(255,255,255,0.07),rgba(255,255,255,0.02));
+    border:1px solid var(--glass-border);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    overflow:hidden;transition:all .45s cubic-bezier(.34,1.56,.64,1);
+    text-decoration:none;color:inherit;display:flex;flex-direction:column;
+  }
+  .app-card::before{
+    content:'';position:absolute;inset:0;border-radius:26px;
+    background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%),rgba(255,46,99,0.18),transparent 40%);
+    opacity:0;transition:opacity .4s;pointer-events:none;
+  }
+  .app-card:hover::before{opacity:1}
+  .app-card:hover{
+    transform:translateY(-8px);
+    border-color:rgba(255,46,99,0.4);
+    box-shadow:0 24px 60px rgba(255,46,99,0.15), 0 0 0 1px rgba(255,46,99,0.1);
+  }
+  .app-icon{
+    width:64px;height:64px;border-radius:18px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:30px;margin-bottom:20px;position:relative;
+    background:linear-gradient(135deg,#2a0b30,#4a0f4a);
+    border:1px solid rgba(255,255,255,0.1);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 24px rgba(0,0,0,0.4);
+  }
+  .app-card:nth-child(1) .app-icon{background:linear-gradient(135deg,#1e3a8a,#0e7490)}
+  .app-card:nth-child(2) .app-icon{background:linear-gradient(135deg,#7c2d12,#be123c)}
+  .app-card:nth-child(3) .app-icon{background:linear-gradient(135deg,#4c1d95,#be185d)}
+
+  .app-card h3{font-size:1.35rem;font-weight:800;margin-bottom:8px;letter-spacing:-.5px}
+  .app-card .pkg{
+    font-size:12px;color:var(--text-dim);
+    font-family:monospace;direction:ltr;text-align:right;
+    margin-bottom:14px;opacity:.7;
+  }
+  .app-card p.desc{color:var(--text-dim);font-size:14px;line-height:1.8;margin-bottom:22px;flex:1}
+  .app-card .footer{
+    display:flex;justify-content:space-between;align-items:center;
+    padding-top:18px;border-top:1px solid rgba(255,255,255,0.08);
+  }
+  .app-card .tag{
+    font-size:12px;font-weight:600;padding:5px 12px;border-radius:100px;
+    background:rgba(255,46,99,0.15);color:var(--scarlett-2);
+    border:1px solid rgba(255,46,99,0.25);
+  }
+  .app-card .arrow{
+    font-size:18px;color:var(--scarlett-2);
+    transition:transform .3s;
+  }
+  .app-card:hover .arrow{transform:translateX(-6px)}
+
+  /* ===== About ===== */
+  .about-wrap{
+    display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;
+  }
+  @media(max-width:820px){.about-wrap{grid-template-columns:1fr;gap:32px}}
+
+  .about-text h2{
+    font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;
+    letter-spacing:-1px;margin-bottom:20px;line-height:1.25;
+  }
+  .about-text h2 .grad{
+    background:linear-gradient(135deg,var(--scarlett),var(--purple-glow));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .about-text p{color:var(--text-dim);margin-bottom:16px;font-size:15px}
+  .about-text strong{color:var(--text);font-weight:700}
+  .feature-list{list-style:none;margin-top:24px}
+  .feature-list li{
+    display:flex;gap:12px;align-items:flex-start;
+    padding:12px 0;color:var(--text-dim);font-size:14px;
+  }
+  .feature-list li::before{
+    content:'✦';color:var(--scarlett-2);font-weight:900;font-size:16px;
+    flex-shrink:0;margin-top:2px;
+  }
+
+  .about-visual{
+    position:relative;aspect-ratio:1;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .glass-orb{
+    width:100%;height:100%;border-radius:50%;
+    background:conic-gradient(from 180deg, #ff2e63, #c026d3, #a855f7, #ff2e63);
+    filter:blur(60px);opacity:.35;
+    animation:spin 20s linear infinite;position:absolute;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .avatar-card{
+    position:relative;width:75%;aspect-ratio:1;
+    border-radius:32px;
+    background:linear-gradient(145deg,rgba(255,255,255,0.1),rgba(255,255,255,0.02));
+    border:1px solid var(--glass-border);
+    backdrop-filter:blur(20px);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    box-shadow:0 30px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.15);
+    text-align:center;padding:32px;gap:8px;
+  }
+  .avatar-emoji{font-size:64px;margin-bottom:8px;filter:drop-shadow(0 6px 20px rgba(255,46,99,0.5))}
+  .avatar-card h4{font-weight:800;font-size:1.15rem;line-height:1.4}
+  .avatar-card span{color:var(--text-dim);font-size:13px}
+  .avatar-card .role{
+    margin-top:16px;padding:6px 16px;border-radius:100px;
+    background:rgba(255,46,99,0.15);color:var(--scarlett-2);
+    font-size:12px;font-weight:600;border:1px solid rgba(255,46,99,0.3);
+  }
+
+  /* ===== Contact ===== */
+  .contact-grid{
+    display:grid;grid-template-columns:1fr;
+    gap:20px;max-width:480px;margin:0 auto;
+  }
+  .contact-card{
+    padding:40px 32px;border-radius:24px;
+    background:linear-gradient(145deg,rgba(255,255,255,0.07),rgba(255,255,255,0.02));
+    border:1px solid var(--glass-border);backdrop-filter:blur(20px);
+    text-decoration:none;color:inherit;display:flex;flex-direction:column;
+    gap:14px;transition:all .4s cubic-bezier(.34,1.56,.64,1);
+    text-align:center;align-items:center;
+  }
+  .contact-card:hover{
+    transform:translateY(-6px);
+    border-color:rgba(255,46,99,0.4);
+    box-shadow:0 20px 50px rgba(255,46,99,0.2);
+  }
+  .contact-card .icon{
+    width:64px;height:64px;border-radius:20px;
+    display:flex;align-items:center;justify-content:center;font-size:28px;
+    background:linear-gradient(135deg,rgba(255,46,99,0.2),rgba(168,85,247,0.2));
+    border:1px solid rgba(255,255,255,0.1);
+  }
+  .contact-card h4{font-size:1.1rem;font-weight:800}
+  .contact-card p{color:var(--text-dim);font-size:13px;direction:ltr;word-break:break-all}
+  .contact-card .go{
+    margin-top:8px;font-size:12px;font-weight:700;color:var(--scarlett-2);
+  }
+
+  /* ===== Footer ===== */
+  footer{
+    padding:50px 24px 40px;text-align:center;
+    border-top:1px solid rgba(255,255,255,0.06);
+    margin-top:40px;
+  }
+  footer .brand-footer{
+    font-weight:900;font-size:1.1rem;margin-bottom:12px;
+    background:linear-gradient(135deg,var(--scarlett),var(--purple-glow));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  footer p{color:var(--text-dim);font-size:13px;margin-bottom:6px}
+  footer .heart{color:var(--scarlett)}
+</style>
+</head>
+<body>
+
+<div class="bg-velvet"></div>
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+<div class="blob b3"></div>
+
+<!-- ===== NAVBAR ===== -->
+<nav>
+  <span class="brand">اسکارلت</span>
+  <a href="#apps" class="hide-sm">اپلیکیشن‌ها</a>
+  <a href="#about" class="hide-sm">درباره ما</a>
+  <a href="#contact" class="hide-sm">تماس</a>
+  <a href="https://rubika.ir/marcaheamozeshieskarlt" target="_blank" rel="noopener" class="cta">کانال روبیکا</a>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="badge">
+    <span class="dot"></span>
+    <span>در حال توسعه‌ی ایده‌های جدید 🚀</span>
+  </div>
+  <h1>
+    به <span class="grad">مرجع آموزشی اسکارلت</span><br>خوش اومدی
+  </h1>
+  <p class="sub">
+    جایی که ایده‌ها تبدیل به اپلیکیشن و بازی می‌شن. ساخته‌شده با عشق، کدنویسی و کمی جادو ✨
+  </p>
+  <div class="hero-actions">
+    <a href="#apps" class="btn primary">مشاهده اپلیکیشن‌ها ↓</a>
+    <a href="#about" class="btn ghost">درباره ما</a>
+  </div>
+  <div class="stats">
+    <div class="stat"><b>۳</b><span>اپلیکیشن منتشرشده</span></div>
+    <div class="stat"><b>۱۰۰٪</b><span>تأیید در مایکت</span></div>
+    <div class="stat"><b>۶۰۰+</b><span>نصب گردونه شانس</span></div>
+  </div>
+</header>
+
+<!-- ===== APPS ===== -->
+<section id="apps">
+  <div class="section-head">
+    <span class="eyebrow">✦ Portfolio</span>
+    <h2>اپلیکیشن‌های ما</h2>
+    <p>هر کدوم داستانی دارن؛ از تخته‌سیاهی که برامون شروع یه ماجرا بود، تا گردونه‌ای که محبوب شد و آرکانوئیدی که گرافیکش رو دوست داریم.</p>
+  </div>
+
+  <div class="apps">
+    <a class="app-card" href="https://myket.ir/app/ir.eskarlt.blackboard" target="_blank" rel="noopener">
+      <div class="app-icon">🖤</div>
+      <h3>تخته سیاه هوشمند</h3>
+      <div class="pkg">ir.eskarlt.blackboard</div>
+      <p class="desc">
+        اولین اپلیکیشنی که به مایکت فرستادیم و خیلی بابتش ذوق کردیم. یک تخته سیاه هوشمند برای یادگیری، طراحی و ایده‌پردازی.
+      </p>
+      <div class="footer">
+        <span class="tag">آموزشی</span>
+        <span class="arrow">←</span>
+      </div>
+    </a>
+
+    <a class="app-card" href="https://myket.ir/app/ir.eskarlt.gerdone" target="_blank" rel="noopener">
+      <div class="app-icon">🎡</div>
+      <h3>گردونه شانس</h3>
+      <div class="pkg">ir.eskarlt.gerdone</div>
+      <p class="desc">
+        محبوب‌ترین برنامه‌ی ما! با بیش از ۶۰۰ نصب. یه گردونه‌ی شانس که برای تصمیم‌های سخت و بازی‌های دونفره عالیه.
+      </p>
+      <div class="footer">
+        <span class="tag">سرگرمی</span>
+        <span class="arrow">←</span>
+      </div>
+    </a>
+
+    <a class="app-card" href="https://myket.ir/app/ir.eskarlt.arkanoid" target="_blank" rel="noopener">
+      <div class="app-icon">🕹️</div>
+      <h3>آرکانوئید اولترا</h3>
+      <div class="pkg">ir.eskarlt.arkanoid</div>
+      <p class="desc">
+        آخرین ساخته‌ی ما و از نظر گرافیک عاشقشیم! نسخه‌ای مدرن و رنگارنگ از بازی نوستالژیک آرکانوئید.
+      </p>
+      <div class="footer">
+        <span class="tag">بازی</span>
+        <span class="arrow">←</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section id="about">
+  <div class="about-wrap">
+    <div class="about-text">
+      <span class="eyebrow">✦ درباره ما</span>
+      <h2>یه مجموعه‌ی <span class="grad">مستقل و پر از ایده</span></h2>
+      <p>
+        <strong>مرجع آموزشی اسکارلت</strong> مجموعه‌ای شخصیه که به‌طور کامل توسط خودمون اداره می‌شه؛ بدون هیچ شریکی، فقط ما و کدها و ایده‌هامون.
+      </p>
+      <p>
+        هر اپلیکیشنی که توی این صفحه می‌بینی، از صفر تا صد توسط خودمون طراحی و توسعه داده شده. از طراحی رابط کاربری تا کدنویسی و انتشار در مایکت.
+      </p>
+      <ul class="feature-list">
+        <li>تمرکز روی ایده‌های کاربردی و خلاقانه</li>
+        <li>انتشار همه‌ی اپلیکیشن‌ها در مایکت با تأیید</li>
+        <li>پاسخ‌گویی به نظرات و پیشنهادها در روبیکا</li>
+        <li>همیشه در حال کار روی ایده‌های جدید</li>
+      </ul>
+    </div>
+
+    <div class="about-visual">
+      <div class="glass-orb"></div>
+      <div class="avatar-card">
+        <div class="avatar-emoji">👨‍💻</div>
+        <h4>مرجع آموزشی اسکارلت</h4>
+        <span>توسعه‌دهنده اندروید</span>
+        <span class="role">مجموعه‌ی مستقل</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact">
+  <div class="section-head">
+    <span class="eyebrow">✦ تماس با ما</span>
+    <h2>بیا با ما حرف بزن</h2>
+    <p>نظر، پیشنهاد یا ایده‌ای داری؟ از طریق کانال روبیکا برامون بنویس تا به کارش بگیریم.</p>
+  </div>
+
+  <div class="contact-grid">
+    <a class="contact-card" href="https://rubika.ir/marcaheamozeshieskarlt" target="_blank" rel="noopener">
+      <div class="icon">📣</div>
+      <h4>کانال رسمی اسکارلت</h4>
+      <p>rubika.ir/marcaheamozeshieskarlt</p>
+      <span class="go">عضویت در کانال ←</span>
+    </a>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="brand-footer">مرجع آموزشی اسکارلت</div>
+  <p>ساخته‌شده با <span class="heart">♥</span> در مرجع آموزشی اسکارلت</p>
+  <p style="font-size:12px;opacity:.6;margin-top:10px;">© همه حقوق محفوظ است</p>
+</footer>
+
+<script>
+  // افکت نور مکان‌نمای روی کارت‌ها
+  document.querySelectorAll('.app-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+
+  // انیمیشن ظاهر شدن بخش‌ها با اسکرول
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('section > *').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity .8s ease, transform .8s ease';
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
